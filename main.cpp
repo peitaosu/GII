@@ -1,11 +1,12 @@
-#include "giimain.h"
+
+#include "process.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    GIIMain w;
-    w.show();
-
+    Process process;
+    process.init();
+    process.start();
     return a.exec();
 }

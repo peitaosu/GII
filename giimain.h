@@ -17,6 +17,10 @@ class GIIMain : public QMainWindow
 
     private:
         Ui::GIIMain *ui;
+
+    private slots:
+        void updateDisplayName(QString display_name);
+
 };
 
 #endif // GIIMAIN_H

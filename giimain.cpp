@@ -12,3 +12,8 @@ GIIMain::~GIIMain()
 {
     delete ui;
 }
+
+void GIIMain::updateDisplayName(QString display_name){
+    this->setWindowTitle(display_name);
+    ui->display_name->setText(display_name);
+}
