@@ -14,7 +14,7 @@
    <string>GII</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QLabel" name="label">
+   <widget class="QLabel" name="display_name">
     <property name="geometry">
      <rect>
       <x>50</x>
@@ -33,7 +33,7 @@
      <string>Display Name</string>
     </property>
    </widget>
-   <widget class="QProgressBar" name="progressBar">
+   <widget class="QProgressBar" name="progress_bar">
     <property name="geometry">
      <rect>
       <x>50</x>
@@ -46,7 +46,7 @@
      <number>24</number>
     </property>
    </widget>
-   <widget class="QLabel" name="label_2">
+   <widget class="QLabel" name="process_message">
     <property name="geometry">
      <rect>
       <x>50</x>
@@ -65,16 +65,6 @@
      <string>Processing ...</string>
     </property>
    </widget>
-  </widget>
-  <widget class="QMenuBar" name="menuBar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>480</width>
-     <height>21</height>
-    </rect>
-   </property>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
