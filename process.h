@@ -5,24 +5,41 @@
 #include <QFile>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include "giimain.h"
+#include <QJsonArray>
+#include <QProcess>
+#include <QDebug>
 
 class Process : public QObject
 {
         Q_OBJECT
     public:
         explicit Process(QObject *parent = 0);
-        int init();
-        int start();
+        void setProcessCount(int count);
 
     private:
-        GIIMain *main_window;
+        QProcess *exec_process;
         QJsonObject process_config;
+        QThread *thread;
+
+        int process_count = 0;
+        int processing = 0;
+        int current_finished = 0;
+
+        int exec_msi(QString);
+        int exec_bat(QString);
+        int exec_ps(QString);
+        int exec(QString);
 
     signals:
+        void start();
+        void finished();
         void updateDisplayName(QString);
+        void updateProgressBar(int);
+        void updateProcessName(QString);
 
     public slots:
+        void go();
+        void updateProgress(int);
 
 };
 

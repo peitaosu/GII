@@ -2,6 +2,9 @@
 #define GIIMAIN_H
 
 #include <QMainWindow>
+#include <QThread>
+#include <QDebug>
+#include "process.h"
 
 namespace Ui {
     class GIIMain;
@@ -17,9 +20,13 @@ class GIIMain : public QMainWindow
 
     private:
         Ui::GIIMain *ui;
+        Process *process;
+        QThread *thread;
 
     private slots:
         void updateDisplayName(QString display_name);
+        void updateProgressBar(int progress);
+        void updateProcessName(QString process_name);
 
 };
 
