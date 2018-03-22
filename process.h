@@ -25,9 +25,6 @@ class Process : public QObject
         int processing = 0;
         int current_finished = 0;
 
-        int exec_msi(QString);
-        int exec_bat(QString);
-        int exec_ps(QString);
         int exec(QString);
 
     signals:
