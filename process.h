@@ -15,6 +15,7 @@ class Process : public QObject
     public:
         explicit Process(QObject *parent = 0);
         void setProcessCount(int count);
+        bool isSilent();
 
     private:
         QProcess *exec_process;
@@ -26,6 +27,8 @@ class Process : public QObject
         int current_finished = 0;
 
         int exec(QString);
+
+        bool silent = false;
 
     signals:
         void start();

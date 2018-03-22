@@ -27,6 +27,7 @@ class GIIMain : public QMainWindow
         void updateDisplayName(QString display_name);
         void updateProgressBar(int progress);
         void updateProcessName(QString process_name);
+        void quit();
 
 };
 

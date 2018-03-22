@@ -18,8 +18,15 @@ Process::Process(QObject *parent) : QObject(parent)
 
     connect(exec_process, SIGNAL(finished(int)), this, SLOT(updateProgress(int)));
 
+    if(process_config["Silent"].toString() == "Yes"){
+        this->silent = true;
+    }
+
 }
 
+bool Process::isSilent(){
+    return this->silent;
+}
 
 void Process::go(){
     //emit the display name signal

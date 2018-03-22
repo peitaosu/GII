@@ -14,7 +14,11 @@ GIIMain::GIIMain(QWidget *parent) :
     connect(process ,SIGNAL(updateDisplayName(QString)), this, SLOT(updateDisplayName(QString)));
     connect(process, SIGNAL(updateProgressBar(int)), this, SLOT(updateProgressBar(int)));
     connect(process, SIGNAL(updateProcessName(QString)), this, SLOT(updateProcessName(QString)));
-    this->show();
+    if(!process->isSilent()){
+        this->show();
+    }else{
+        connect(process, SIGNAL(finished()), this, SLOT(quit()));
+    }
     thread->start();
 }
 
@@ -34,4 +38,8 @@ void GIIMain::updateProgressBar(int progress){
 
 void GIIMain::updateProcessName(QString process_name){
     ui->process_message->setText("Processing " + process_name);
+}
+
+void GIIMain::quit(){
+    QApplication::quit();
 }
