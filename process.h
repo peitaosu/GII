@@ -7,6 +7,8 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QProcess>
+#include <QFileInfo>
+#include <QDir>
 #include <QDebug>
 
 class Process : public QObject
@@ -27,6 +29,7 @@ class Process : public QObject
         int current_finished = 0;
 
         int exec(QString);
+        int copy(QString, QString);
 
         bool silent = false;
 

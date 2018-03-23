@@ -16,7 +16,7 @@ Process::Process(QObject *parent) : QObject(parent)
 
     exec_process = new QProcess(this);
 
-    connect(exec_process, SIGNAL(finished(int)), this, SLOT(updateProgress(int)));
+    //connect(exec_process, SIGNAL(finished(int)), this, SLOT(updateProgress(int)));
 
     if(process_config["Silent"].toString() == "Yes"){
         this->silent = true;
@@ -37,9 +37,13 @@ void Process::go(){
     foreach (const QJsonValue & p, process_array){
         emit updateProcessName(p.toObject()["Action"].toString());
         QString process_type = p.toObject()["Type"].toString();
+        int result = -1;
         if(process_type == "Command"){
-            exec(p.toObject()["Command"].toString());
+            result = exec(p.toObject()["Command"].toString());
+        }else if(process_type == "Copy"){
+            result = copy(p.toObject()["Source"].toString(), p.toObject()["Destination"].toString());
         }
+        this->updateProgress(result);
     }
     emit finished();
 }
@@ -48,6 +52,31 @@ void Process::go(){
 int Process::exec(QString command){
     exec_process->start(command);
     exec_process->waitForFinished();
+    return 0;
+}
+
+
+int Process::copy(QString source, QString destination){
+    QFileInfo src_info(source);
+    if (src_info.isDir()) {
+        QDir dest_dir(destination);
+        if (!dest_dir.exists()){
+            dest_dir.cdUp();
+            if (!dest_dir.mkdir(QFileInfo(destination).fileName()))
+                return -1;
+        }
+        QDir source_dir(source);
+        QStringList file_names = source_dir.entryList(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot | QDir::Hidden | QDir::System);
+        foreach (const QString &file_name, file_names) {
+            QString new_source = source + QLatin1Char('/') + file_name;
+            QString new_destination = destination + QLatin1Char('/') + file_name;
+            if (copy(new_source, new_destination) != 0)
+                return -1;
+        }
+    } else {
+        if (!QFile::copy(source, destination))
+            return -1;
+    }
     return 0;
 }
 
