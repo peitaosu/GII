@@ -30,6 +30,7 @@ class Process : public QObject
 
         int exec(QString);
         int copy(QString, QString);
+        int del(QString);
 
         bool silent = false;
 

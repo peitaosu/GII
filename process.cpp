@@ -42,6 +42,8 @@ void Process::go(){
             result = exec(p.toObject()["Command"].toString());
         }else if(process_type == "Copy"){
             result = copy(p.toObject()["Source"].toString(), p.toObject()["Destination"].toString());
+        }else if(process_type == "Delete"){
+            result = del(p.toObject()["Path"].toString());
         }
         this->updateProgress(result);
     }
@@ -75,6 +77,20 @@ int Process::copy(QString source, QString destination){
         }
     } else {
         if (!QFile::copy(source, destination))
+            return -1;
+    }
+    return 0;
+}
+
+int Process::del(QString path){
+    QFileInfo path_info(path);
+    if (path_info.isDir()){
+        QDir path_dir(path);
+        if (!path_dir.removeRecursively())
+            return -1;
+    } else {
+        QFile path_file(path);
+        if (!path_file.remove())
             return -1;
     }
     return 0;
