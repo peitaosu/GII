@@ -18,7 +18,7 @@ Process::Process(QObject *parent) : QObject(parent)
 
     //connect(exec_process, SIGNAL(finished(int)), this, SLOT(updateProgress(int)));
 
-    if(process_config["Silent"].toString() == "Yes"){
+    if(process_config.contains("Silent") && process_config["Silent"].toString().toLower() == "yes"){
         this->silent = true;
     }
 
