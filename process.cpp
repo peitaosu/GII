@@ -18,6 +18,7 @@ Process::Process(QObject *parent) : QObject(parent)
 
     //connect(exec_process, SIGNAL(finished(int)), this, SLOT(updateProgress(int)));
 
+    //get the silent mode config
     if(process_config.contains("Silent") && process_config["Silent"].toString().toLower() == "yes"){
         this->silent = true;
     }
@@ -33,8 +34,10 @@ void Process::go(){
     emit updateDisplayName(process_config["Display Name"].toString());
     this->process_count = process_config["Actions"].toArray().count();
 
+    // foreach action, call function related to action type
     QJsonArray process_array = process_config["Actions"].toArray();
     foreach (const QJsonValue & p, process_array){
+        //update the process name
         emit updateProcessName(p.toObject()["Action"].toString());
         QString process_type = p.toObject()["Type"].toString();
         int result = -1;
@@ -45,6 +48,7 @@ void Process::go(){
         }else if(process_type == "Delete"){
             result = del(p.toObject()["Path"].toString());
         }
+        //update the progress
         this->updateProgress(result);
     }
     emit finished();
