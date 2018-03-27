@@ -9,9 +9,6 @@ Process::Process(QObject *parent) : QObject(parent)
     //set QIODevice RO and read as text
     process_file.open(QIODevice::ReadOnly | QIODevice::Text);
     process_string = process_file.readAll();
-    //expand environment variables
-    process_string = expandEnvironmentVariables(process_string);
-
     process_file.close();
     //convert file to variant map
     QJsonDocument process_json = QJsonDocument::fromJson(process_string.toUtf8());
@@ -45,11 +42,11 @@ void Process::go(){
         QString process_type = p.toObject()["Type"].toString();
         int result = -1;
         if(process_type == "Command"){
-            result = exec(p.toObject()["Command"].toString());
+            result = exec(expandEnvironmentVariables(p.toObject()["Command"].toString()));
         }else if(process_type == "Copy"){
-            result = copy(p.toObject()["Source"].toString(), p.toObject()["Destination"].toString());
+            result = copy(expandEnvironmentVariables(p.toObject()["Source"].toString()), expandEnvironmentVariables(p.toObject()["Destination"].toString()));
         }else if(process_type == "Delete"){
-            result = del(p.toObject()["Path"].toString());
+            result = del(expandEnvironmentVariables(p.toObject()["Path"].toString()));
         }
         //update the progress
         this->updateProgress(result);
