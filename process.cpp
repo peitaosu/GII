@@ -9,6 +9,9 @@ Process::Process(QObject *parent) : QObject(parent)
     //set QIODevice RO and read as text
     process_file.open(QIODevice::ReadOnly | QIODevice::Text);
     process_string = process_file.readAll();
+    //expand environment variables
+    process_string = expandEnvironmentVariables(process_string);
+
     process_file.close();
     //convert file to variant map
     QJsonDocument process_json = QJsonDocument::fromJson(process_string.toUtf8());
@@ -109,4 +112,21 @@ void Process::updateProgress(int){
     float progress = (float)this->current_finished / (float)this->process_count;
     int progress_value = (int)(progress * 100);
     emit updateProgressBar(progress_value);
+}
+
+QString Process::expandEnvironmentVariables( QString original )
+{
+    QString str(original);
+    QRegExp env_var("\\$([A-Za-z0-9_]+)");
+    int iter;
+
+    while((iter = env_var.indexIn(str)) != -1) {
+        QByteArray value(qgetenv(env_var.cap(1).toLatin1().data()));
+        if(value.size() > 0) {
+            str.remove(iter, env_var.matchedLength());
+            str.insert(iter, value);
+        } else
+            break;
+    }
+    return str;
 }

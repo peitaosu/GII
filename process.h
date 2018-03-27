@@ -9,6 +9,7 @@
 #include <QProcess>
 #include <QFileInfo>
 #include <QDir>
+#include <QRegExp>
 #include <QDebug>
 
 class Process : public QObject
@@ -33,6 +34,8 @@ class Process : public QObject
         int del(QString);
 
         bool silent = false;
+
+        QString expandEnvironmentVariables(QString);
 
     signals:
         void start();
