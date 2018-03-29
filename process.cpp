@@ -114,7 +114,7 @@ void Process::updateProgress(int){
 QString Process::expandEnvironmentVariables( QString original )
 {
     QString str(original);
-    QRegExp env_var("\\$([A-Za-z0-9_]+)");
+    QRegExp env_var("\\$\\(env\\.([A-Za-z0-9_]+)\\)");
     int iter;
 
     while((iter = env_var.indexIn(str)) != -1) {
