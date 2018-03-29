@@ -7,6 +7,7 @@ Configuration Driven Process Wrapper.
 
 ## process.json
 Put `process.json` in your current directory, the executable file will try to load this configuration file from current directory.
+* paths and command strings support using environment variables, such as `$(env.ENV_VAR)`
 ```
 {
     "Display Name" : "the title you want to display",
