@@ -48,6 +48,11 @@ void Process::go(){
         }else if(process_type == "Delete"){
             result = del(expandEnvironmentVariables(p.toObject()["Path"].toString()));
         }
+        #ifdef Q_OS_WIN32
+        if(process_type == "Registry"){
+            result = reg(p.toObject()["Func"].toString(), p.toObject()["Root"].toString(), p.toObject()["Key"].toString(), p.toObject()["Name"].toString(), p.toObject()["Type"].toString(), p.toObject()["Value"].toString());
+        }
+        #endif
         //update the progress
         this->updateProgress(result);
     }
@@ -99,6 +104,32 @@ int Process::del(QString path){
     }
     return 0;
 }
+
+#ifdef Q_OS_WIN32
+int Process::reg(QString func, QString rootKey, QString key, QString name, QString type, QString value){
+    HKEY hRootKey;
+    HKEY hKey;
+    if(rootKey == "HKLM"){
+        hRootKey = HKEY_LOCAL_MACHINE;
+    }else if(rootKey == "HKCU"){
+        hRootKey = HKEY_CURRENT_USER;
+    }else if(rootKey == "HKCR"){
+        hRootKey = HKEY_CLASSES_ROOT;
+    }
+    LPCWSTR strKey = (const wchar_t*) key.utf16();
+    RegOpenKeyEx(hRootKey, strKey, NULL, KEY_ALL_ACCESS, &hKey);
+    if(func == "Set"){
+        if(type == "SZ"){
+            RegSetValueEx(hKey, (const wchar_t*)name.utf16(), 0, REG_SZ, (BYTE*)(const wchar_t*)value.utf16(), ((DWORD)wcslen((const wchar_t*)value.utf16()) + 1)*sizeof(wchar_t));
+        }
+        RegCloseKey(hKey);
+    }else if(func == "Delete"){
+        RegDeleteValue(hKey, (const wchar_t*)name.utf16());
+        RegCloseKey(hKey);
+    }
+    return 0;
+}
+#endif
 
 void Process::setProcessCount(int count){
     this->process_count = count;

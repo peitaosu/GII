@@ -12,6 +12,11 @@
 #include <QRegExp>
 #include <QDebug>
 
+#ifdef Q_OS_WIN32
+#include <Windows.h>
+#pragma comment(lib, "Advapi32.lib")
+#endif
+
 class Process : public QObject
 {
         Q_OBJECT
@@ -32,6 +37,9 @@ class Process : public QObject
         int exec(QString);
         int copy(QString, QString);
         int del(QString);
+        #ifdef Q_OS_WIN32
+        int reg(QString, QString, QString, QString, QString, QString);
+        #endif
 
         bool silent = false;
 
