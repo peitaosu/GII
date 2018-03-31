@@ -122,11 +122,12 @@ int Process::reg(QString func, QString rootKey, QString key, QString name, QStri
         if(type == "SZ"){
             RegSetValueEx(hKey, (const wchar_t*)name.utf16(), 0, REG_SZ, (BYTE*)(const wchar_t*)value.utf16(), ((DWORD)wcslen((const wchar_t*)value.utf16()) + 1)*sizeof(wchar_t));
         }
-        RegCloseKey(hKey);
     }else if(func == "Delete"){
         RegDeleteValue(hKey, (const wchar_t*)name.utf16());
-        RegCloseKey(hKey);
+    }else if(func == "Unload"){
+        RegUnLoadKey(hRootKey, strKey);
     }
+    RegCloseKey(hKey);
     return 0;
 }
 #endif
