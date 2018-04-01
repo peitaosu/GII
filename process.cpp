@@ -121,6 +121,12 @@ int Process::reg(QString func, QString rootKey, QString key, QString name, QStri
     if(func == "Set"){
         if(type == "SZ"){
             RegSetValueEx(hKey, (const wchar_t*)name.utf16(), 0, REG_SZ, (BYTE*)(const wchar_t*)value.utf16(), ((DWORD)wcslen((const wchar_t*)value.utf16()) + 1)*sizeof(wchar_t));
+        }else if(type == "DWORD"){
+            float digital_value = value.toFloat();
+            RegSetValueEx(hKey, (const wchar_t*)name.utf16(), 0, REG_DWORD, (LPBYTE)&digital_value, sizeof(DWORD));
+        }else if(type == "QWORD"){
+            float digital_value = value.toFloat();
+            RegSetValueEx(hKey, (const wchar_t*)name.utf16(), 0, REG_QWORD, (LPBYTE)&digital_value, sizeof(ULONGLONG));
         }
     }else if(func == "Delete"){
         RegDeleteValue(hKey, (const wchar_t*)name.utf16());
