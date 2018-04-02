@@ -37,3 +37,36 @@ Put `process.json` in your current directory, the executable file will try to lo
     "Silent": "No"
 }
 ```
+In Windows, it also support registry operations:
+```
+        {
+            "Action": "Set Registry Value",
+            "Type": "Registry",
+            "Func": "Set",
+            "Root": "HKLM",
+            "Key": "Software",
+            "Name": "Test",
+            "Type": "SZ",
+            "Value": "Test"
+        },
+        {
+            "Action": "Delete Registry Value",
+            "Type": "Registry",
+            "Func": "Delete",
+            "Root": "HKCU",
+            "Key": "Software",
+            "Name": "Test",
+            "Type": "",
+            "Value": ""
+        },
+        {
+            "Action": "Unload Registry Key",
+            "Type": "Registry",
+            "Func": "Unload",
+            "Root": "HKCR",
+            "Key": "Test",
+            "Name": "",
+            "Type": "",
+            "Value": ""
+        }
+```
