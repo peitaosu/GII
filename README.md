@@ -1,5 +1,8 @@
 GII
 ======
+
+[![GitHub license](https://img.shields.io/github/license/peitaosu/GII.svg)](https://github.com/peitaosu/GII/blob/master/LICENSE)
+
 Configuration Driven Process Wrapper.
 
 ## Build
